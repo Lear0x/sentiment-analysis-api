@@ -62,7 +62,7 @@ python app/database.py create_table
 ### 6. **Tester la base de données**
 Pour voir les données (s'il y en a) dans la table `tweets` :
 ```bash
-python app/database.py fetch_tweets
+python -m app.database create_table
 ```
 
 ---
