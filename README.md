@@ -105,13 +105,13 @@ curl -X POST http://127.0.0.1:5000/analyze \
 ### Initialiser la base de données
 Créer la table `tweets` :
 ```bash
-python app/database.py create_table
+python -m app.database create_table
 ```
 
 ### Voir les données de la base de données
 Afficher les entrées existantes dans la table `tweets` :
 ```bash
-python app/database.py fetch_tweets
+python -m app.database fetch_tweets
 ```
 
 ### Réentraînement du modèle
