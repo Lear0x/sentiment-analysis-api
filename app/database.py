@@ -39,7 +39,7 @@ def fetch_tweets():
     connection.close()
 
 
-#lancement commande python app/database.py fetch_tweets ou python app/database.py create_table
+#lancement commande python -m app.database fetch_tweets ou python -m app.database create_table
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("Usage: python database.py <create_table|fetch_tweets>")
