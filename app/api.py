@@ -53,5 +53,31 @@ def analyze_sentiments():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route('/tweets', methods=['GET'])
+def get_all_tweets():
+    try:
+        # Connexion à la base de données
+        connection = mysql.connector.connect(
+            host=Config.MYSQL_HOST,
+            user=Config.MYSQL_USER,
+            password=Config.MYSQL_PASSWORD,
+            database=Config.MYSQL_DB
+        )
+        cursor = connection.cursor(dictionary=True)  # Retourne les résultats sous forme de dictionnaire
+
+        # Récupérer tous les tweets
+        cursor.execute("SELECT * FROM tweets;")
+        tweets = cursor.fetchall()
+
+        cursor.close()
+        connection.close()
+
+        # Retourner les tweets au format JSON
+        return jsonify(tweets), 200
+    except mysql.connector.Error as err:
+        return jsonify({"error": f"Erreur de base de données : {err}"}), 500
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 if __name__ == '__main__':
     app.run(debug=True)
