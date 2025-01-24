@@ -56,13 +56,13 @@ FLASK_ENV=development
 ### 5. **Initialiser la base de données**
 Créez la table `tweets` dans la base de données :
 ```bash
-python app/database.py create_table
+python -m app.database create_table
 ```
 
 ### 6. **Tester la base de données**
 Pour voir les données (s'il y en a) dans la table `tweets` :
 ```bash
-python -m app.database create_table
+python -m app.database fetch_tweets
 ```
 
 ---
