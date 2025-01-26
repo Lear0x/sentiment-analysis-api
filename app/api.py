@@ -1,8 +1,16 @@
+import pickle
 from flask import Flask, request, jsonify
 import mysql.connector
 from config import Config
 
 app = Flask(__name__)
+
+# Charger les modèles et vectorizers
+with open("model_positive.pkl", "rb") as f:
+    model_positive, vectorizer_positive = pickle.load(f)
+
+with open("model_negative.pkl", "rb") as f:
+    model_negative, vectorizer_negative = pickle.load(f)
 
 # Fonction pour enregistrer un tweet dans la base de données
 def save_tweet_to_db(text, positive, negative):
@@ -38,17 +46,25 @@ def analyze_sentiments():
 
         results = {}
         for idx, tweet in enumerate(tweets):
-            # Simulation du score (remplacer par une logique ou un modèle plus tard)
-            sentiment_score = round(len(tweet) % 3 - 1, 2)
-            positive = 1 if sentiment_score > 0 else 0
-            negative = 1 if sentiment_score < 0 else 0
+            # Prédiction des probabilités
+            prob_positive = model_positive.predict_proba(vectorizer_positive.transform([tweet]))[0][1]
+            prob_negative = model_negative.predict_proba(vectorizer_negative.transform([tweet]))[0][1]
 
-            # Sauvegarde dans la base de données
+            # Calcul du score final
+            sentiment_score = prob_positive - prob_negative
+            print(f"Tweet {idx + 1} : {tweet} - Score : {sentiment_score}")
+            # Ajouter le score dans le résultat
+            results[f"tweet{idx + 1}"] = round(float(sentiment_score), 2)
+            
+            if sentiment_score > 0:
+                positive = 1
+                negative = 0
+            else:
+                positive = 0
+                negative = 1
+            # Enregistrer le tweet dans la base de données      
             save_tweet_to_db(tweet, positive, negative)
-
-            # Ajout des résultats pour la réponse
-            results[f"tweet{idx + 1}"] = sentiment_score
-
+            
         return jsonify(results), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
