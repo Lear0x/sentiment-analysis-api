@@ -144,9 +144,11 @@ Afficher les entrées existantes dans la table `tweets` :
 python -m app.database fetch_tweets
 ```
 
-### Réentraînement du modèle
-(À venir) Script pour automatiser le réentraînement.
-
+### Réentraînement Automatique
+Lors du lancement de l'API, le réentraînement est déclenché si nécessaire. Vous pouvez également le lancer manuellement :
+```bash
+python -m app.api retrain_model
+```
 ---
 
 ## Contribution
