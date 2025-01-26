@@ -98,6 +98,36 @@ curl -X POST http://127.0.0.1:5000/analyze \
 }
 ```
 
+
+### 3. **Récupérer tous les tweets enregistrés**
+L'endpoint `GET /tweets` permet de récupérer tous les tweets enregistrés dans la base de données.
+
+#### Exemple de requête :
+```bash
+curl http://127.0.0.1:5000/tweets
+```
+
+#### Exemple de réponse :
+```json
+[
+    {
+        "id": 1,
+        "text": "J'adore ce projet !",
+        "positive": 1,
+        "negative": 0
+    },
+    {
+        "id": 2,
+        "text": "Ce programme est horrible...",
+        "positive": 0,
+        "negative": 1
+    }
+]
+```
+
+Cet endpoint est utile pour vérifier les tweets déjà analysés et enregistrés dans la base.
+
+
 ---
 
 ## Scripts Disponibles
