@@ -17,6 +17,12 @@ def create_table():
             positive TINYINT(1),
             negative TINYINT(1)
         );
+        
+        CREATE TABLE IF NOT EXISTS retraining_logs (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+            last_tweet_id INT NOT NULL
+        );
     """)
     connection.commit()
     cursor.close()
@@ -49,3 +55,4 @@ if __name__ == "__main__":
         fetch_tweets()
     else:
         print("Action inconnue. Utilisez 'create_table' ou 'fetch_tweets'.")
+
