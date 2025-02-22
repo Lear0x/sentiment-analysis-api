@@ -2,11 +2,14 @@ import pickle
 import mysql.connector
 import pandas as pd
 from config import Config
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.metrics import confusion_matrix
 
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import classification_report
+from sklearn.metrics import classification_report, confusion_matrix
 from sqlalchemy import create_engine
 
 def load_data():
@@ -29,11 +32,10 @@ def load_data():
 
     
 def train_model(X, y):
-    # Convertir le texte en vecteurs numériques
+  
     vectorizer = CountVectorizer()
     X_vect = vectorizer.fit_transform(X)
 
-    # Diviser les données en train/test
     X_train, X_test, y_train, y_test = train_test_split(X_vect, y, test_size=0.2, random_state=42)
 
     # Entraîner le modèle
@@ -45,8 +47,20 @@ def train_model(X, y):
     print("Rapport de classification :")
     print(classification_report(y_test, y_pred, zero_division=1))
 
+    plot_confusion_matrix(y_test, y_pred, "Matrice de Confusion")
+
     return model, vectorizer
 
+def plot_confusion_matrix(y_true, y_pred, title):
+    cm = confusion_matrix(y_true, y_pred)
+    plt.figure(figsize=(5, 4))
+    sns.heatmap(cm, annot=True, fmt='d', cmap="Blues", xticklabels=["Négatif", "Positif"], yticklabels=["Négatif", "Positif"])
+    plt.xlabel("Prédictions")
+    plt.ylabel("Réel")
+    plt.title(title)
+    plt.show(block=False)
+    plt.pause(5)
+    plt.close()
 
 if __name__ == "__main__":
     # Charger les données

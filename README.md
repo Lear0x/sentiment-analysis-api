@@ -72,7 +72,7 @@ python -m app.database fetch_tweets
 ### 1. **Lancer l'API Flask**
 Activez l'environnement virtuel (si ce n'est pas encore fait) et lancez le serveur Flask :
 ```bash
-source venv/bin/activate          # Sous Windows : venv\Scripts\activate
+source venv/Scripts/activate          # Sous Windows : venv\Scripts\activate
 python app/api.py
 ```
 
