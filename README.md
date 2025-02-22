@@ -138,6 +138,16 @@ Créer la table `tweets` :
 python -m app.database create_table
 ```
 
+### 📌 Stockage des Tweets en Base de Données
+- **Tous les tweets analysés** via `/analyze` sont **automatiquement enregistrés** dans la base MySQL.
+- La table **`tweets`** contient :
+  - `id` (clé primaire)
+  - `text` (contenu du tweet)
+  - `positive` (1 = positif, 0 = négatif)
+  - `negative` (1 = négatif, 0 = positif)
+
+Cela permet de **réentraîner le modèle** uniquement sur de nouvelles données au fil du temps.
+
 ### Voir les données de la base de données
 Afficher les entrées existantes dans la table `tweets` :
 ```bash
@@ -145,30 +155,21 @@ python -m app.database fetch_tweets
 ```
 
 ### Réentraînement Automatique
-Lors du lancement de l'API, le réentraînement est déclenché si nécessaire. Vous pouvez également le lancer manuellement :
+Lors du démarrage de l'API, elle vérifie si un réentraînement du modèle est nécessaire.
+- Si le dernier réentraînement date de **plus de 7 jours**, un nouveau réentraînement est lancé automatiquement.
+- Les logs de réentraînement sont stockés dans la table **`retraining_logs`**.
+
+ Vous pouvez également le lancer manuellement :
 ```bash
 python -m app.api retrain_model
 ```
 ---
 
-## Contribution
-1. Créez une branche pour vos modifications :
-   ```bash
-   git checkout -b feature/<nom_de_la_feature>
-   ```
-2. Faites vos changements et commitez-les :
-   ```bash
-   git add .
-   git commit -m "Description des changements"
-   ```
-3. Poussez vos modifications vers le dépôt distant :
-   ```bash
-   git push origin feature/<nom_de_la_feature>
-   ```
-4. Ouvrez une Pull Request sur la branche `main`.
-
+### 📌 Modèle de Classification Utilisé
+Nous utilisons **`LogisticRegression`** avec **`CountVectorizer()`** pour transformer les textes en vecteurs numériques.
+#### 💡 Améliorations possibles :
+- Tester **`TfidfVectorizer()`** pour donner plus d'importance aux mots rares.
+- Essayer **`RandomForestClassifier`** pour une meilleure robustesse.
+- Ajouter **plus de tweets positifs** pour équilibrer les données d'entraînement.
 
 ---
-
-## Aide
-Si vous rencontrez des problèmes, contactez [Mathieu](mailto:mathieu@example.com) ou ouvrez une issue sur GitHub.
